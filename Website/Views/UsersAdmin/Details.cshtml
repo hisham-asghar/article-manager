@@ -1,0 +1,283 @@
+﻿@using CustomModels.PropertyModels
+@using LayerDB
+@model RentalsProject.Controllers.Users.UserDetails
+
+@{
+    ViewBag.Title = "Details";
+    
+}
+<div class="col-md-12">
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-content">
+
+                <div>
+                    <div>
+                        <div class="pull-left">
+                            <h4>User </h4>
+                        </div>
+                        <div class="pull-right">
+                            
+                            <a href="@Url.Action("Edit", "UsersAdmin", new {id = Model.AspNetUser.Id})" class="btn btn-round bg-custom-blue">
+                                <svg style="width: 24px; height: 24px" viewBox="0 0 24 24">
+                                    <path fill="#000000" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                                </svg>
+
+                            </a>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <td>
+                                @Model.AspNetUser.PersonName
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Address
+                            </th>
+                            <td>
+                                @Model.AspNetUser.HomeTown
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Email Address
+                            </th>
+                            <td>
+                                @Model.AspNetUser.Email
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Phone Number
+                            </th>
+                            <td>
+                                @Model.AspNetUser.PhoneNumber
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Secondary Phone Number
+                            </th>
+                            <td>
+                                @Model.AspNetUser.SecondaryPhoneNumber
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Secondary Email
+                            </th>
+                            <td>
+                                @Model.AspNetUser.SecondaryEmailAddress
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6">
+
+        <div class="card">
+            <div class="card-content">
+
+                <h4>Roles</h4>
+                <table class="table table-striped">
+
+                    @foreach (var item in Model.Roles)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+       @if (Model.Roles.Contains("HomeOwner"))
+       {
+           <div class="card">
+               <div class="card-content">
+
+                   <h4>Listing Status</h4>
+                   @{
+                       var infoModel = Model.HomeOwnerInfo ?? new HomeOwnerInfo()
+                       {
+                           UnListAirbnb = false,
+                           UnListExpedia = false,
+                           UnListRentalsUnited = false,
+                           UnListBookingDotCom = false
+                       };
+                       Model.HomeOwnerInfo = infoModel;
+                   }
+                   <a href="~/HomeOwnerInfoes/Edit?id=@(Model.AspNetUser.Id)">
+                       <button>Edit</button>
+                   </a>
+                   <table class="table table-striped">
+                       <tr>
+                           <td> Airbnb :  </td>
+                           <td>
+                               <span class="label label-@(!Model.HomeOwnerInfo.UnListAirbnb ? "success" : "danger")">
+                                   @(!Model.HomeOwnerInfo.UnListAirbnb ? "Active" : "Deactive")
+                               </span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td> Booking.com :  </td>
+                           <td>
+
+                               <span class="label label-@(!Model.HomeOwnerInfo.UnListBookingDotCom ? "success" : "danger")">
+                                   @(!Model.HomeOwnerInfo.UnListBookingDotCom ? "Active" : "Deactive")
+                               </span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td> Expedia :  </td>
+                           <td>
+                               <span class="label label-@(!Model.HomeOwnerInfo.UnListExpedia ? "success" : "danger")">
+                                   @(!Model.HomeOwnerInfo.UnListExpedia ? "Active" : "Deactive")
+                               </span>
+                           </td>
+                       </tr>
+                       <tr>
+                           <td> Rentals United :  </td>
+                           <td>
+                               <span class="label label-@(!Model.HomeOwnerInfo.UnListRentalsUnited ? "success" : "danger")">
+                                   @(!Model.HomeOwnerInfo.UnListRentalsUnited ? "Active" : "Deactive")
+                               </span>
+                           </td>
+                       </tr>
+                   </table>
+               </div>
+           </div>
+       }
+       
+    </div>
+</div>
+
+@if (Model.AspNetUser != null && Model.HomeOwnerLinks != null && Model.HomeOwnerLinks.Count > 0)
+{
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-content">
+                <h4>
+                    <a href="@Url.Action("LatestView","MyProperty" , new {ownerId = Model.AspNetUser.Id , viewComposition = true})">
+                        Listings - Click View All
+                    </a>
+                    | 
+                    <a href="@Url.Action("UpdatePlatformStatus","UsersAdmin" , new {id = Model.AspNetUser.Id , status = false, platform = "airbnb"})">
+                        Deactive Airbnb
+                    </a>
+                    | 
+                </h4>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Name By Owner
+                        </th>
+                        <th>
+                            Link By Owner
+                        </th>
+                        <th>
+                            Images By Owner
+                        </th>
+                        <th>
+                            TMG Name
+                        </th>
+                        <th>
+                            Address
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                    @foreach (var item in Model.HomeOwnerLinks)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OwnerPropertyName)
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(item.OwnerLink))
+                                {
+                                    <a href="@item.OwnerLink">Preview</a>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(item.OwnerImagesLink))
+                                {
+                                    <a href="@item.OwnerImagesLink">Preview</a>
+                                }
+                            </td>
+                            <td>
+                                
+                                @{ var platforms = Generics.Functions.ParseJson<List<PropertyPlatformInfo>>(item.PlatformJson) ?? new List<PropertyPlatformInfo>(); }
+                                @Html.DisplayFor(modelItem => item.Name)
+                                @if (item.IsArchived.HasValue && item.IsArchived.Value)
+                                {
+                                    <span class="label label-warning" style="background-color: #b02dd0;">Archived</span>
+                                }
+                                <br/>
+                                @foreach (var platform in platforms)
+                                {
+                                    <a href="@(string.IsNullOrWhiteSpace(platform.WebsiteLink) ? platform.AdminPanelLink : platform.WebsiteLink)">
+                                        <span class="label label-danger" style="@(platform.IsActive ? "background-color: #266aab;" : "")">@platform.Platform</span>
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Details", "HomeOwner", new {id = item.Id})">
+                                    View
+                                </a>
+                                |
+                                <a href="@Url.Action("Edit", "HomeOwner", new {id = item.Id})">
+                                    Edit
+                                </a>
+                                |
+                                <a target="_blank" href="@Url.Action("Delete", "HomeOwner", new {id = item.Id})">
+                                    Delete
+                                </a>
+                                |
+                                <a target="_blank" href="@Url.Action("HomeOwnerDiconnect", "MyProperty", new { propertyid = item.PropertyId})">
+                                    Disconnect Owner Info
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AspNetUser.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+
