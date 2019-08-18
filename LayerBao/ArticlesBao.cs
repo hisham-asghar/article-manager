@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LayerDao;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,11 @@ namespace LayerBao
         public static int MyArticlesCount(string userId)
         {
             return LayerDao.ArticlesDao.MyArticlesCount(userId);
+        }
+
+        public static bool MarkForReview(long id)
+        {
+            return ArticlesDao.MarkForReview(id);
         }
     }
 }

@@ -36,7 +36,7 @@
             @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin) && article.IsReadyToReview == false && article.IsReadyToPublish == false
                 && (article.ArticleReviews == null || article.ArticleReviews.Count() == 0))
             {
-                <a class="btn btn-info btn-sm" href="@Url.Action("Create","ArticleReviews", new { id = article.Id})">Mark Article For Review</a>
+                <a class="btn btn-info btn-sm" href="@Url.Action("MarkArticleForReview","ArticleReviews", new { id = article.Id})">Mark Article For Review</a>
             }
             @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin) && article.IsReadyToReview == true && article.IsReadyToPublish == false
                 && (article.ArticleReviews == null || article.ArticleReviews.Count() == 0))
