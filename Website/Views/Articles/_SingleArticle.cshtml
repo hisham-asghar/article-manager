@@ -1,0 +1,95 @@
+﻿@model LayerDb.Models.Article
+@using Microsoft.AspNet.Identity
+@{
+    var article = Model;
+}
+<div class="article">
+
+    <div class="card">
+        <div class="card-toolbar">
+            <label class="label">
+                <i class="fa fa-user"></i>
+                @article.AspNetUser.Name
+            </label>
+            <label class="label">
+                <i class="fa fa-calendar"></i>
+                @article.OnCreated.ToString("dd/MM/yyyy")
+            </label>
+            <br />
+            <label class="label label-info">
+                @(!article.IsReadyToReview ? "Not Yet Reviewable" : article.ArticleReviews.Count() == 0 ? "Ready for Review" : article.IsReadyToPublish ? "Published" : "Reviewed")
+            </label>
+        </div>
+        <div class="card-content">
+            <a href="@Url.Action("Details","Articles", new { id = article.Id})"><h4>@article.Title</h4></a>
+            <p>@article.SubTitle</p>
+        </div>
+        <div class="card-footer" style="padding: 8px;padding-bottom:12px;">
+            @if (article.CreatedBy == User.Identity.GetUserId())
+            {
+                <a class="btn btn-info btn-sm" href="@Url.Action("Create","ArticleBlocks", new { id = article.Id})">Add Block</a>
+            }
+            @if (User.IsInRole(Website.Models.Constants.UserRoles.Reviewer) && article.CreatedBy != User.Identity.GetUserId() && (article.ArticleReviews == null || article.ArticleReviews.Count() == 0))
+            {
+                <a class="btn btn-info btn-sm" href="@Url.Action("Create","ArticleReviews", new { id = article.Id})">Post Review</a>
+            }
+            @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin) && article.IsReadyToReview == false && article.IsReadyToPublish == false
+                && (article.ArticleReviews == null || article.ArticleReviews.Count() == 0))
+            {
+                <a class="btn btn-info btn-sm" href="@Url.Action("Create","ArticleReviews", new { id = article.Id})">Mark Article For Review</a>
+            }
+            @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin) && article.IsReadyToReview == true && article.IsReadyToPublish == false
+                && (article.ArticleReviews == null || article.ArticleReviews.Count() == 0))
+            {
+                <a class="btn btn-info btn-sm" href="@Url.Action("Create","ArticleReviews", new { id = article.Id})">Publish Article</a>
+            }
+        </div>
+        @if (article.ArticleReviews != null && article.ArticleReviews.Count() > 0)
+        {
+            <div class="card-footer">
+                <div class="panel-info">
+                    <div class="panel-heading">
+                        <h5>Review</h5>
+                        @foreach (var review in article.ArticleReviews)
+                        {
+                            <blockquote>
+                                @review.Description
+                            </blockquote>
+                            <span style="font-style:italic">&nbsp;&nbsp; by @review.AspNetUser.Name</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        
+
+    </div>
+    <div class="card" style='margin-left: @(article.ArticleReviews != null && article.ArticleReviews.Count() > 0 ? "3rem" : "0rem" );'>
+        @foreach (var block in article.ArticleBlocks)
+            {
+            <div class="@(block.BlockType.Name == "Fact" ? "panel-success" : block.BlockType.Name == "Analysis" ? "panel-warning" : block.BlockType.Name == "Assumption" ? "panel-danger" : "panel-info" )">
+                <div class="panel-heading">
+                    <span>@block.Description</span>
+                    @foreach (var comment in block.ArticleBlocksComments)
+                {
+                        <div class="panel-content">
+                            <div class="panel-toolbar">
+                                <label class="label">
+                                    <i class="fa fa-user"></i>
+                                    @comment.AspNetUser.Name
+                                </label>
+
+                            </div>
+                            @comment.Description
+                        </div>
+                    }
+                    <div class="panel-content-new">
+                        <a href="@Url.Action("Create", "ArticleBlocksComments", new { id = block.Id})">Write a new comment !!</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+

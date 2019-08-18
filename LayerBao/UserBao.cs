@@ -24,19 +24,40 @@ namespace LayerBao
             return UserDao.GetUsersByRoleName(id);
         }
 
-        public static bool UpdateRoles(string id, List<string> ur)
+        public static bool UpdateRoles(string userId, string email, List<string> ur)
         {
-            return true;
+            var result = true;
+            var existingRoles = UserDao.GetRoles(email);
+            foreach(var role in existingRoles)
+            {
+                if (ur.Contains(role))
+                {
+                    result = ur.Remove(role) && result;
+                }else
+                {
+                    result = UserDao.RemoveRoleById(userId, role) && result;
+                }
+            }
+            foreach(var role in ur)
+            {
+                result = UserDao.AddRoleById(userId, role) && result;
+            }
+            return result;
         }
 
         public static void Update(AspNetUser aspuser, string id)
         {
-            throw new NotImplementedException();
+            UserDao.UpdateFull(aspuser,id);
         }
 
         public static bool RemoveUserById(string id)
         {
             return UserDao.RemoveUserById(id);
+        }
+
+        public static AspNetUser GetUserById(string id)
+        {
+            return UserDao.GetAspUserById(id);
         }
     }
 }

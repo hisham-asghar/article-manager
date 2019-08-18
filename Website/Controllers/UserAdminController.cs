@@ -94,7 +94,7 @@ namespace RentalsProject.Controllers.Users
                 {
 
                     var ur = userRoles.Where(u => u != null && u.Trim() != "").ToList();
-                    var result = UserBao.UpdateRoles(user.Id, ur);
+                    var result = UserBao.UpdateRoles(user.Id, user.Email, ur);
                     
                     return returnUrl == null
                         ? RedirectToAction("Details", "UsersAdmin", new { id = user.Id })
@@ -158,24 +158,24 @@ namespace RentalsProject.Controllers.Users
             var email = Request.Form["Email"];
             if (!string.IsNullOrWhiteSpace(email))
                 user.UserName = email;
+            
+            var name = Request.Form["Name"];
+            if (!string.IsNullOrWhiteSpace(name))
+                user.Name = name;
 
             if (ModelState.IsValid)
             {
                 //Update the user details
                 await UserManager.UpdateAsync(user);
-                var aspuser = new LayerDb.Models.AspNetUser()
-                {
-                    Id = id,
-                    UserName = email,
-                    Email = email
-                };
+                var aspuser = UserBao.GetUserById(id);
+                aspuser.Name = user.Name;
                 UserBao.Update(aspuser, id);
                 //If user has existing Role then remove the user from the role
                 // This also accounts for the case when the Admin selected Empty from the drop-down and
                 // this means that all roles for the user must be removed
 
                 var ur = userRoles.Where(u => u != null && u.Trim() != "").ToList();
-                var result = UserBao.UpdateRoles(id, ur);
+                var result = UserBao.UpdateRoles(id, user.Email, ur);
                 
                 if (!result)
                 {
@@ -208,7 +208,7 @@ namespace RentalsProject.Controllers.Users
                 //    }
                 //}
                 return returnUrl == null
-                    ? RedirectToAction("Details","UsersAdmin", new { id = user.Id})
+                    ? RedirectToAction("Index","UsersAdmin")
                     : RedirectToRoute(returnUrl);
             }
             else

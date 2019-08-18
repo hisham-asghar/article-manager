@@ -6,8 +6,8 @@ namespace LayerDb.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("__MigrationHistory")]
-    public partial class C__MigrationHistory
+    [Table("__MigrationHistory2")]
+    public partial class C__MigrationHistory2
     {
         [Key]
         [Column(Order = 0)]

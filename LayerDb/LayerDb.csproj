@@ -68,7 +68,7 @@
     <Compile Include="Models\AspNetUserClaim.cs" />
     <Compile Include="Models\AspNetUserLogin.cs" />
     <Compile Include="Models\BlockType.cs" />
-    <Compile Include="Models\C__MigrationHistory.cs" />
+    <Compile Include="Models\C__MigrationHistory2.cs" />
     <Compile Include="Models\DbModel.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

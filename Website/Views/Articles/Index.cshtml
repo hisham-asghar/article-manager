@@ -1,0 +1,22 @@
+﻿@model IEnumerable<LayerDb.Models.Article>
+@using Microsoft.AspNet.Identity
+@using Website.Models
+
+<br />
+<br />
+
+@if (Model.Count() == 0)
+{
+    <div class="jumbotron">
+        <h1>Hi @User.Identity.GetApplicationUser().Name</h1>
+
+        <a href="@Url.Action("Create","Articles")" class="btn btn-primary">
+            Post Article
+        </a>
+    </div>
+}
+@foreach(var article in Model)
+{
+    @Html.Partial("_SingleArticle",article)
+    <br />
+}

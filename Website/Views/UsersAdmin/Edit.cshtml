@@ -1,14 +1,14 @@
-﻿@model UserManageLibrary.Models.ApplicationUser
+﻿@model Website.Models.ApplicationUser
 @{
     ViewBag.Title = "Edit";
-    var roles = Generics.Functions.ListDividier(LayerDAO.UserDAO.GetRoles(null), 2);
-    var userRoles = LayerDAO.UserDAO.GetRoles(Model.Email);
+    var roles = Generics.Functions.ListDividier(LayerBao.UserBao.GetRoles(null), 2);
+    var userRoles = LayerBao.UserBao.GetRoles(Model.Email);
 }
 <div class="row">
     <div class="col-md-12">
 
         <div class="card">
-            <div class="card-content">
+            <div class="card-content" style="margin:25px;">
                 @using (Html.BeginForm())
                 {
                     @Html.AntiForgeryToken()
@@ -21,9 +21,9 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group control-group">
-                                    @Html.LabelFor(m => m.PersonName,"Name", new { @class = "control-label" })
+                                    @Html.LabelFor(m => m.Name,"Name", new { @class = "control-label" })
                                     <div class="controls">
-                                        @Html.TextBoxFor(m => m.PersonName, new { @class = "form-control" })
+                                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        @*<div class="row">
                             <div class="col-md-6">
                                 <div class="form-group control-group">
                                     @Html.LabelFor(m => m.HomeTown, "Address", new { @class = "control-label" })
@@ -53,8 +53,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
+                        </div>*@
+                        @*<div class="row">
                             <div class="col-md-6">
 
                                 <div class="control-group">
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="row">
                             <h4>Modify Role for User</h4>
 
@@ -106,7 +106,7 @@
                                 <button type="submit" id="submitBtn" class="btn btn-success">
                                     Save
                                 </button>
-                                <button type="button" id="submitBtn" class="btn btn-info" loc-ref="@Url.Action("Details","UsersAdmin", new {id = Model.Id})">
+                                <button type="button" id="submitBtn" class="btn btn-info" loc-ref="@Url.Action("Index","UsersAdmin")">
                                     Cancel
                                 </button>
                             </div>
@@ -126,6 +126,7 @@
         $(document).ready(function() {
             $(".togglebutton").each(function() {
                 $(this).change(function (e, v) {
+                    debugger;
                     if ($(this).find("input[type=checkbox]").is(":checked")) {
                         $(this).find("input[type=hidden]").val($(this).find("input[type=checkbox]").attr("data-val"));
                     } else {

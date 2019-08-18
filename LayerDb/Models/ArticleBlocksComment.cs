@@ -30,5 +30,9 @@ namespace LayerDb.Models
         public string ModifiedBy { get; set; }
 
         public virtual ArticleBlock ArticleBlock { get; set; }
+
+        public virtual AspNetUser AspNetUser { get; set; }
+
+        public virtual AspNetUser AspNetUser1 { get; set; }
     }
 }

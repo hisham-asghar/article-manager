@@ -11,6 +11,8 @@ namespace LayerDb.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AspNetUser()
         {
+            ArticleBlocksComments = new HashSet<ArticleBlocksComment>();
+            ArticleBlocksComments1 = new HashSet<ArticleBlocksComment>();
             ArticleReviews = new HashSet<ArticleReview>();
             Articles = new HashSet<Article>();
             Articles1 = new HashSet<Article>();
@@ -45,6 +47,15 @@ namespace LayerDb.Models
         [Required]
         [StringLength(256)]
         public string UserName { get; set; }
+
+        [StringLength(1024)]
+        public string Name { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArticleBlocksComment> ArticleBlocksComments { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArticleBlocksComment> ArticleBlocksComments1 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArticleReview> ArticleReviews { get; set; }

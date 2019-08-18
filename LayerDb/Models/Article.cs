@@ -43,6 +43,9 @@ namespace LayerDb.Models
 
         public bool IsDeleted { get; set; }
 
+        [StringLength(256)]
+        public string Guid { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArticleBlock> ArticleBlocks { get; set; }
 

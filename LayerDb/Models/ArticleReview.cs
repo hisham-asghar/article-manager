@@ -8,7 +8,6 @@ namespace LayerDb.Models
 
     public partial class ArticleReview
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }
 
         [Required]

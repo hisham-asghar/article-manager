@@ -123,33 +123,33 @@ namespace LayerDao
         //    }
         //}
 
-        //public static bool UpdateFull(AspNetUser user, string id, bool force = false)
-        //{
-        //    var updateQuery =
-        //        "UPDATE [dbo].[AspNetUsers] SET " +
-        //        $"[PersonName] = {user.PersonName.GetStirngForDb()}" +
-        //        $",[HomeTown] = {user.HomeTown.GetStirngForDb()}" +
-        //        $",[BirthDate] = {(user.BirthDate?.ToString()).GetStirngForDb()}" +
-        //        $",[Email] = {user.Email.GetStirngForDb()}" +
-        //        $",[EmailConfirmed] = {(user.EmailConfirmed ? 1 :0)}," +
-        //        $"[PasswordHash] = {user.PasswordHash.GetStirngForDb()}" +
-        //        $",[SecurityStamp] = {user.SecurityStamp.GetStirngForDb()}" +
-        //        $",[PhoneNumber] = {user.PhoneNumber.GetStirngForDb()}," +
-        //        $"[PhoneNumberConfirmed] = {(user.PhoneNumberConfirmed ? 1 : 0)}," +
-        //        $"[TwoFactorEnabled] = {(user.TwoFactorEnabled ? 1 : 0)}," +
-        //        $"[LockoutEndDateUtc] = {(user.LockoutEndDateUtc?.ToString()).GetStirngForDb()}," +
-        //        $"[LockoutEnabled] = {(user.LockoutEnabled ? 1 : 0)}," +
-        //        $"[AccessFailedCount] = {user.AccessFailedCount}," +
-        //        $"[UserName] = {user.UserName.GetStirngForDb()}" +
-        //        $",[Address] = {user.Address.GetStirngForDb()}," +
-        //        $"[Image] = {user.Image.GetStirngForDb()}," +
-        //        $"[SecondaryEmailAddress] = {user.SecondaryEmailAddress.GetStirngForDb()}," +
-        //        $"[SecondaryPhoneNumber] = {user.SecondaryPhoneNumber.GetStirngForDb()}" +
-        //        $"WHERE Id = {user.Id.GetStirngForDb()}";
+        public static bool UpdateFull(AspNetUser user, string id, bool force = false)
+        {
+            var updateQuery =
+                "UPDATE [dbo].[AspNetUsers] SET " +
+                $"[Name] = {user.Name.GetStirngForDb()}" +
+                //$",[HomeTown] = {user.HomeTown.GetStirngForDb()}" +
+                //$",[BirthDate] = {(user.BirthDate?.ToString()).GetStirngForDb()}" +
+                $",[Email] = {user.Email.GetStirngForDb()}" +
+                //$",[EmailConfirmed] = {(user.EmailConfirmed ? 1 : 0)}," +
+                //$"[PasswordHash] = {user.PasswordHash.GetStirngForDb()}" +
+                //$",[SecurityStamp] = {user.SecurityStamp.GetStirngForDb()}" +
+                $",[PhoneNumber] = {user.PhoneNumber.GetStirngForDb()}," +
+                $"[PhoneNumberConfirmed] = {(user.PhoneNumberConfirmed ? 1 : 0)}," +
+                $"[TwoFactorEnabled] = {(user.TwoFactorEnabled ? 1 : 0)}," +
+                $"[LockoutEndDateUtc] = {(user.LockoutEndDateUtc?.ToString()).GetStirngForDb()}," +
+                $"[LockoutEnabled] = {(user.LockoutEnabled ? 1 : 0)}," +
+                $"[AccessFailedCount] = {user.AccessFailedCount}," +
+                $"[UserName] = {user.UserName.GetStirngForDb()}" +
+                //$",[Address] = {user.Address.GetStirngForDb()}," +
+                //$"[Image] = {user.Image.GetStirngForDb()}," +
+                //$"[SecondaryEmailAddress] = {user.SecondaryEmailAddress.GetStirngForDb()}," +
+                //$"[SecondaryPhoneNumber] = {user.SecondaryPhoneNumber.GetStirngForDb()}" +
+                $"WHERE Id = {user.Id.GetStirngForDb()}";
 
-        //    var query = string.Format(UserQueries.AspUserExistsQuery(user.Id, null), updateQuery);
-        //    return QueryExecutor.ExecuteDml(query, $"Update Asp User Id = {user.Id}, Email = {user.Email}");
-        //}
+            var query = string.Format(UserQueries.AspUserExistsQuery(user.Id, null), updateQuery);
+            return QueryExecutor.ExecuteDml(query, $"Update Asp User Id = {user.Id}, Email = {user.Email}");
+        }
 
         //public static bool Create(AspNetUser user)
         //{

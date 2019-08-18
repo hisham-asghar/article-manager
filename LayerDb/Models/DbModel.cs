@@ -12,7 +12,7 @@ namespace LayerDb.Models
         {
         }
 
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        public virtual DbSet<C__MigrationHistory2> C__MigrationHistory2 { get; set; }
         public virtual DbSet<ArticleBlock> ArticleBlocks { get; set; }
         public virtual DbSet<ArticleBlocksComment> ArticleBlocksComments { get; set; }
         public virtual DbSet<ArticleReview> ArticleReviews { get; set; }
@@ -51,6 +51,18 @@ namespace LayerDb.Models
                 .HasMany(e => e.AspNetUsers)
                 .WithMany(e => e.AspNetRoles)
                 .Map(m => m.ToTable("AspNetUserRoles").MapLeftKey("RoleId").MapRightKey("UserId"));
+
+            modelBuilder.Entity<AspNetUser>()
+                .HasMany(e => e.ArticleBlocksComments)
+                .WithRequired(e => e.AspNetUser)
+                .HasForeignKey(e => e.CreatedBy)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<AspNetUser>()
+                .HasMany(e => e.ArticleBlocksComments1)
+                .WithRequired(e => e.AspNetUser1)
+                .HasForeignKey(e => e.ModifiedBy)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AspNetUser>()
                 .HasMany(e => e.ArticleReviews)
