@@ -446,6 +446,20 @@ namespace Generics
                 return null;
             }
         }
+        public static T FromXml<T>(this string xml)
+        {
+            try
+            {
+                var doc = new XmlDocument();
+                doc.LoadXml(xml);
+                var json = JsonConvert.SerializeXmlNode(doc);
+                return json.FromJson<T>();
+            }
+            catch (Exception e)
+            {
+                return default;
+            }
+        }
         public static bool CompareComplesStrings(this string str1, string str2)
         {
             var seperator = new[] { '-', '_', ' ' };

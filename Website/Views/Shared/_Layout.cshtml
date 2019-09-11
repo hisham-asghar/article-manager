@@ -24,48 +24,51 @@
                 @Html.ActionLink("Article Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        @Html.ActionLink("Feed", "Index", "Articles")
-                    </li>
-                    @if (User.IsInRole(Website.Models.Constants.UserRoles.Reader)
-                        || User.IsInRole(Website.Models.Constants.UserRoles.Reviewer)
-                        || User.IsInRole(Website.Models.Constants.UserRoles.Admin) 
-                        || LayerBao.ArticlesBao.MyArticlesCount(User.Identity.GetUserId()) == 0)
-                    {
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav">
                         <li>
-                            @Html.ActionLink("Post Article", "Create", "Articles")
+                            @Html.ActionLink("Feed", "Index", "Articles")
                         </li>
-                    }
-                    <li>@Html.ActionLink("My Articles", "MyArticles", "Articles")</li>
-                    @if (User.IsInRole(Website.Models.Constants.UserRoles.Reviewer)
-                        || User.IsInRole(Website.Models.Constants.UserRoles.Admin))
-                    {
-                        <li>@Html.ActionLink("Reviewer Articles", "ReviewerArticles", "Articles")</li>
-                    }
-                    @if (User.IsInRole(Website.Models.Constants.UserRoles.Reader)
-                        || User.IsInRole(Website.Models.Constants.UserRoles.Reviewer)
-                        || User.IsInRole(Website.Models.Constants.UserRoles.Admin))
-                    {
-                        <li>@Html.ActionLink("Published Articles", "PublishedArticles", "Articles")</li>
-                    }
+                        @if (User.IsInRole(Website.Models.Constants.UserRoles.Reader)
+                || User.IsInRole(Website.Models.Constants.UserRoles.Reviewer)
+                || User.IsInRole(Website.Models.Constants.UserRoles.Admin)
+                || LayerBao.ArticlesBao.MyArticlesCount(User.Identity.GetUserId()) == 0)
+                        {
+                            <li>
+                                @Html.ActionLink("Post Article", "Create", "Articles")
+                            </li>
+                        }
+                        <li>@Html.ActionLink("My Articles", "MyArticles", "Articles")</li>
+                        @if (User.IsInRole(Website.Models.Constants.UserRoles.Reviewer)
+                || User.IsInRole(Website.Models.Constants.UserRoles.Admin))
+                        {
+                            <li>@Html.ActionLink("Reviewer Articles", "ReviewerArticles", "Articles")</li>
+                        }
+                        @if (User.IsInRole(Website.Models.Constants.UserRoles.Reader)
+                || User.IsInRole(Website.Models.Constants.UserRoles.Reviewer)
+                || User.IsInRole(Website.Models.Constants.UserRoles.Admin))
+                        {
+                            <li>@Html.ActionLink("Published Articles", "PublishedArticles", "Articles")</li>
+                        }
 
-                    @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin))
-                    {
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                Admin
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("User Management", "Index", "UsersAdmin")</li>
-                                <li>@Html.ActionLink("New Articles", "NewArticles", "Articles")</li>
-                                <li>@Html.ActionLink("Articles Ready To Publish", "ArticlesWithReviews", "Articles")</li>
-                            </ul>
-                        </li>
-                    }
-                    
-                </ul>
+                        @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin))
+                        {
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Admin
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("User Management", "Index", "UsersAdmin")</li>
+                                    <li>@Html.ActionLink("New Articles", "NewArticles", "Articles")</li>
+                                    <li>@Html.ActionLink("Articles Ready To Publish", "ArticlesWithReviews", "Articles")</li>
+                                </ul>
+                            </li>
+                        }
+
+                    </ul>
+                }
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
@@ -76,7 +79,7 @@
         <footer>
             <p>&copy; 
                 @DateTime.Now.Year - Powered by
-                <a href="//octcaer.com">Octcaer.com</a>
+                <a href="//octacer.com">Octcaer.com</a>
             </p>
         </footer>
     </div>

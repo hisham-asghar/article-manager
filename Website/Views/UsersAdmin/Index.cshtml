@@ -49,7 +49,7 @@
                                 @Html.DisplayFor(modelItem => item.UserName)
                             </td>
                             <td>
-                                @(item.Roles.Count > 0 ? item.Roles.Select(r => roles.FirstOrDefault(rr=> rr.Id == r.RoleId)?.Name).Aggregate((c, n) => c + ", " + n) : "Default")
+                                @(item.Roles.Count > 0 ? item.Roles.Select(r => roles.FirstOrDefault(rr=> rr.Id == r.RoleId)).Where(r => r != null).Select(r => r.Name).Aggregate((c, n) => c + ", " + n) : "Default")
                             </td>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

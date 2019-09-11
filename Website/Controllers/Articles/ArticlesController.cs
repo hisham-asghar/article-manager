@@ -181,7 +181,13 @@ namespace Website.Controllers.Articles
         public ActionResult MarkArticleForReview(long id)
         {
             bool result = LayerBao.ArticlesBao.MarkForReview(id);
-            return RedirectToAction("Details","Articles", new { id });
+            return RedirectToAction("Details", "Articles", new { id });
+        }
+        [Authorize(Roles = "Admin")]
+        public ActionResult MarkArticleForPublish(long id)
+        {
+            bool result = LayerBao.ArticlesBao.MarkForPublish(id);
+            return RedirectToAction("Details", "Articles", new { id });
         }
 
         // GET: Articles/Delete/5

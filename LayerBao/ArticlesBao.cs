@@ -13,10 +13,18 @@ namespace LayerBao
         {
             return LayerDao.ArticlesDao.MyArticlesCount(userId);
         }
+        public static int GetArticles(string userId)
+        {
+            return LayerDao.ArticlesDao.MyArticlesCount(userId);
+        }
 
         public static bool MarkForReview(long id)
         {
             return ArticlesDao.MarkForReview(id);
+        }
+        public static bool MarkForPublish(long id)
+        {
+            return ArticlesDao.MarkForPublish(id);
         }
     }
 }

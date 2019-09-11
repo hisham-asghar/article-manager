@@ -23,7 +23,10 @@ namespace LayerDb.Models
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<BlockType> BlockTypes { get; set; }
+        public virtual DbSet<SiteMeta> SiteMetas { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
+        public virtual DbSet<UserTag> UserTags { get; set; }
+        public virtual DbSet<ArticleView> ArticleViews { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
