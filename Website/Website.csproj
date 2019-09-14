@@ -172,8 +172,9 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Articles\ArticleBlocksCommentsController.cs" />
     <Compile Include="Controllers\Articles\ArticleBlocksController.cs" />
+    <Compile Include="Controllers\Articles\ArticleManagerViewsController.cs" />
     <Compile Include="Controllers\Articles\ArticleReviewsController.cs" />
-    <Compile Include="Controllers\Articles\ArticlesController.cs" />
+    <Compile Include="Controllers\Crud\ArticlesController.cs" />
     <Compile Include="Controllers\Crud\BlockTypesController.cs" />
     <Compile Include="Controllers\Crud\TagsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -196,12 +197,21 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Controllers\Content\bootstrap-theme.css" />
+    <Content Include="Controllers\Content\bootstrap-theme.min.css" />
+    <Content Include="Controllers\Content\bootstrap.css" />
+    <Content Include="Controllers\Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Controllers\Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
     <None Include="Properties\PublishProfiles\FTP-FileManager.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -230,18 +240,18 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Models\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Models\Account\ConfirmEmail.cshtml" />
+    <Content Include="Models\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Models\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Models\Account\ForgotPassword.cshtml" />
+    <Content Include="Models\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Models\Account\Login.cshtml" />
+    <Content Include="Models\Account\Register.cshtml" />
+    <Content Include="Models\Account\ResetPassword.cshtml" />
+    <Content Include="Models\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Models\Account\SendCode.cshtml" />
+    <Content Include="Models\Account\VerifyCode.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
@@ -293,24 +303,34 @@
     <Content Include="Views\ArticleBlocksComments\Index.cshtml" />
     <Content Include="Views\Articles\_SingleArticle.cshtml" />
     <Content Include="Views\Articles\_SingleArticleCompact.cshtml" />
+    <Content Include="Views\ArticleManagerViews\Create.cshtml" />
+    <Content Include="Views\ArticleManagerViews\Delete.cshtml" />
+    <Content Include="Views\ArticleManagerViews\Details.cshtml" />
+    <Content Include="Views\ArticleManagerViews\Edit.cshtml" />
+    <Content Include="Views\ArticleManagerViews\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Controllers\Content\bootstrap.min.css.map" />
+    <Content Include="Controllers\Content\bootstrap.css.map" />
+    <Content Include="Controllers\Content\bootstrap-theme.min.css.map" />
+    <Content Include="Controllers\Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Generics\Generics.csproj">
+      <Project>{5cbe83cc-8bb4-4f78-be84-d9880fc1058e}</Project>
+      <Name>Generics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LayerBao\LayerBao.csproj">
       <Project>{031256fe-eda4-41af-9b5e-7cd98c637bba}</Project>
       <Name>LayerBao</Name>

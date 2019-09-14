@@ -9,6 +9,16 @@ namespace LayerBao
 {
     public class ArticlesBao
     {
+        public static List<LayerDb.Models.ArticleManagerView> GetArticleManagerView()
+        {
+            return ArticlesDao.GetArticleManagerView();
+        }
+
+        public static List<LayerDb.Models.ArticleManagerView> GetArticleManagerViewByUserId(string userId, long tagId)
+        {
+            return ArticlesDao.GetArticleManagerViewByUserId(userId, tagId);
+        }
+
         public static int MyArticlesCount(string userId)
         {
             return LayerDao.ArticlesDao.MyArticlesCount(userId);
@@ -17,6 +27,7 @@ namespace LayerBao
         {
             return LayerDao.ArticlesDao.MyArticlesCount(userId);
         }
+       
 
         public static bool MarkForReview(long id)
         {

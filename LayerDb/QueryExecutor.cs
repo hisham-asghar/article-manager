@@ -7,7 +7,7 @@ using System.Linq;
 using LayerDb.AdoNet;
 using LayerDb.Models;
 
-namespace LayerDao
+namespace LayerDb
 {
     public class QueryExecutor
     {

@@ -10,6 +10,16 @@ namespace LayerBao
 {
     public class UserBao
     {
+        public static bool IsUserTagExist(string email)
+        {
+            return UserDao.IsUserTagExist(email);
+        }
+        public static void InsertTagId(string email, long id)
+        {
+            string uid = UserDao.getId(email);
+            UserDao.InsertTagId(uid , id );
+
+        }
         public static List<AspNetRole> GetRolesDto(string username)
         {
             return UserDao.GetRolesDto(username);

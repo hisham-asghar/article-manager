@@ -1,0 +1,73 @@
+﻿@model IEnumerable<LayerDb.Models.ArticleManagerView>
+
+@{
+    ViewBag.Title = "Index";
+  
+}
+
+<h3></h3>
+
+<p>
+    @Html.ActionLink("Add Article", "Create", "Articles", new { area = "" }, new { @class = "navbar-brand" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SubTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedByName)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedByEmail)
+        </th>
+        <th>@Html.Label("Status")</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubTitle)
+        </td>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedByName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedByEmail)
+        </td>
+        @if (item.IsReadyToReview == false)
+        {  <td>
+           
+                <a class="btn btn-info btn-sm" href="@Url.Action("ReviewRequest","ArticleManagerViews", new { id = item.Id})">Apply For Review</a>
+           </td>
+        }
+        else if(item.IsReadyToReview == true && item.IsReadyToPublish == false && item.ReviewCount < 1)
+        {
+                <td>
+                    <a class="btn btn-info btn-sm" href="@Url.Action("ArticleReviewed","ArticleManagerViews", new { id = item.Id})">Add Review</a>
+                </td>
+        }
+        else if(item.ReviewCount >= 1 && item.IsReadyToPublish == false)
+        {
+            <td>
+                <a class="btn btn-info btn-sm" href="@Url.Action("PublishRequesh","ArticleManagerViews", new { id = item.Id})">Ready for Publish</a>
+            </td>
+        }
+        else if (item.IsReadyToPublish == true)
+        {
+            <td>
+                <a class="btn btn-info btn-sm" href="@Url.Action("ArticlePublished","ArticleManagerViews", new { id = item.Id})">Published</a>
+            </td>
+        }
+
+        @*<td>
+        @Html.ActionLink("Edit", "Edit", new {  }) |
+        @Html.ActionLink("Details", "Details", new {  }) |
+        @Html.ActionLink("Delete", "Delete", new { })
+        </td>*@
+    </tr>
+}
+
+</table>

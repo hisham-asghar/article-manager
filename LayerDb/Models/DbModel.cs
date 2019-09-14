@@ -26,6 +26,7 @@ namespace LayerDb.Models
         public virtual DbSet<SiteMeta> SiteMetas { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<UserTag> UserTags { get; set; }
+        public virtual DbSet<ArticleManagerView> ArticleManagerViews { get; set; }
         public virtual DbSet<ArticleView> ArticleViews { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

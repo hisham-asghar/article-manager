@@ -17,6 +17,7 @@ namespace Generics
     public static class Functions
     {
 #pragma warning disable 0168
+        public static string password = "123";
         public static bool CompareDate(this DateTime d1 , DateTime d2)
         {
             return d1.Day == d2.Day && d1.Month == d2.Month && d1.Year == d2.Year;
@@ -457,7 +458,7 @@ namespace Generics
             }
             catch (Exception e)
             {
-                return default;
+               return default(T);
             }
         }
         public static bool CompareComplesStrings(this string str1, string str2)

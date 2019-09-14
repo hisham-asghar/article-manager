@@ -9,31 +9,37 @@ using Website.Models;
 using System.Web.Mvc;
 using LayerDb.Models;
 using Microsoft.AspNet.Identity;
-
+using LayerBao;
+using LayerDb;
 namespace Website.Controllers.Articles
 {
     [Authorize]
     public class ArticlesController : Controller
     {
         private DbModel db = new DbModel();
-
+        long id = SiteMetaBao.GetCurrentDatabase();
         // GET: Articles
         public ActionResult Index()
         {
+            var articles = ArticlesBao.GetArticleManagerView();
             var myUserId = User.Identity.GetUserId();
             var myRoles = LayerBao.UserBao.GetRoles(myUserId);
             var onlyMyArticles = myRoles.Count() == 0;
-            var articles = db.Articles.Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
+            
             if (onlyMyArticles)
-                articles = articles.Where(a => a.CreatedBy == myUserId);
+                articles = articles.Where(a => a.CreatedBy == myUserId).ToList();
             if (myRoles.Contains(Models.Constants.UserRoles.Reviewer))
             {
-                articles = articles.Where(a => a.CreatedBy == myUserId || a.IsReadyToPublish || (a.IsReadyToReview && a.ArticleReviews.Count() == 0));
+                articles = articles.Where(a => a.CreatedBy == myUserId || a.IsReadyToPublish || (a.IsReadyToReview && a.ReviewCount == 0)).ToList();
             }
             else if (myRoles.Contains(Models.Constants.UserRoles.Reader))
             {
-                articles = articles.Where(a => a.CreatedBy == myUserId || a.IsReadyToPublish);
+                articles = articles.Where(a => a.CreatedBy == myUserId || a.IsReadyToPublish).ToList();
             }
+            
+
+            
+            
             return View(articles.ToList());
         }
         
@@ -41,7 +47,11 @@ namespace Website.Controllers.Articles
         public ActionResult MyArticles()
         {
             var myUserId = User.Identity.GetUserId();
-            var articles = db.Articles.Where(a => a.CreatedBy == myUserId).Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
+
+            var articles = ArticlesBao.GetArticleManagerViewByUserId(myUserId, id);
+
+
+            //var articles = QueryExecutor.List<Article>("Select a.* , an.*,at.* from dbo.Articles as a inner join dbo.ArticleTags as at on a.Id = at.ArticleId  inner join dbo.AspNetUsers as an on an.Id = a.CreatedBy where at.TagId = 1", "Get Tags For Articles");
             return View("Index", articles.ToList());
         }
         [Authorize(Roles = Models.Constants.UserRoles.Admin + "," + Models.Constants.UserRoles.Reviewer)]

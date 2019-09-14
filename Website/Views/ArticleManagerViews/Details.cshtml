@@ -1,0 +1,58 @@
+﻿@model LayerDb.Models.ArticleManagerView
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ArticleManagerView</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SubTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Guid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Guid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReviewCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReviewCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedByName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedByName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedByEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedByEmail)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id}) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

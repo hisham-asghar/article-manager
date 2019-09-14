@@ -11,6 +11,35 @@ namespace LayerDao
 {
     public static class UserDao
     {
+        public static bool IsUserTagExist(string email)
+        {
+            using (LayerDb.Models.DbModel db = new LayerDb.Models.DbModel())
+            {
+                var uid = db.AspNetUsers.FirstOrDefault(u => u.Email.ToLower().Trim().Equals(email.Trim().ToLower()))?.Id;
+                long id = SiteMetaDao.GetTagIdOfDatabase();
+                bool IsExsist = db.UserTags.FirstOrDefault(u => u.TagId.Equals(id) && uid.Equals(u.UserId)) == null;
+                return IsExsist;
+            }
+
+        }
+        public static string getId(string email)
+        {
+            using (var db = new DbModel())
+            {
+                var database = db.AspNetUsers.Where(a => a.Email.Trim().ToLower().Equals(email.Trim().ToLower())).FirstOrDefault();
+                return database.Id;
+            }
+        }
+        public static void InsertTagId(string uid, long id)
+        {
+            using (var db = new DbModel())
+            {
+          
+                db.UserTags.Add(new UserTag { UserId = uid, TagId = id });
+                db.SaveChanges();
+
+            }
+        }
 
         public static List<AspNetUser> GetAspNetUsers()
         {
@@ -353,4 +382,5 @@ namespace LayerDao
             $" SELECT * FROM [dbo].[AspNetUsers] (nolock)  " +
             $"WHERE Id = '{id}' OR Email = '{email}';";
     }
+    
 }

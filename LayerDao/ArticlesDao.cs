@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LayerDb;
+using LayerDb.Models;
 
 namespace LayerDao
 {
@@ -14,6 +15,23 @@ namespace LayerDao
             var query = $"SELECT COUNT(*) AS Result FROM dbo.Articles WHERE CreatedBy = '{userId}'";
             return QueryExecutor.FirstOrDefault<TemplateClass<int>>(query,"My Articles Count = " + userId)?.Result ?? 0;
         }
+
+        public static List<LayerDb.Models.ArticleManagerView> GetArticleManagerView()
+        {
+
+            return QueryExecutor.List<ArticleManagerView>("SELECT * FROM  ArticleManagerView", "Article Manager View");
+
+        }
+
+        public static List<LayerDb.Models.ArticleManagerView> GetArticleManagerViewByUserId( string userId, long tagId)
+        {
+
+            return QueryExecutor.List<ArticleManagerView>($"SELECT * FROM  ArticleManagerView WHERE ArticleManagerView.CreatedBy = '{userId}' and ArticleManagerView.TagId = {tagId}", "Article Manager View By Tag");
+
+        }
+        
+
+
 
         public static bool MarkForReview(long id)
         {
