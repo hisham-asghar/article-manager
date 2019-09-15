@@ -9,9 +9,12 @@ namespace LayerBao
 {
     public class ArticlesBao
     {
-        public static List<LayerDb.Models.ArticleManagerView> GetArticleManagerView()
+        public static List<LayerDb.Models.ArticleManagerView> GetArticleManagerView(string databaseName = null)
         {
-            return ArticlesDao.GetArticleManagerView();
+            var articles = ArticlesDao.GetArticleManagerView();
+            if (string.IsNullOrWhiteSpace(databaseName) == false)
+                articles = articles.Where(a => a.TagName?.ToLower().Trim() == databaseName?.Trim().ToLower()).ToList();
+            return articles;
         }
 
         public static List<LayerDb.Models.ArticleManagerView> GetArticleManagerViewByUserId(string userId, long tagId)

@@ -47,6 +47,18 @@ namespace LayerDao
             return QueryExecutor.List<AspNetUser>(query, "Get Users List");
         }
 
+        public static List<AspNetUser> GetAspNetUsersByTagName(string id)
+        {
+            //if(id == null)
+            //{ }
+            //var q = "SELECT * FROM dbo.AspNetUsers WHERE Id IN (SELECT * FROM dbo.UserTags WHERE)"
+            var query = "Select * from dbo.AspNetUsers " +
+                (id == null ? "" : ("WHERE Id IN " +
+                "(SELECT dbo.UserTags.UserId FROM dbo.UserTags " +
+                $"INNER JOIN dbo.Tags ON dbo.UserTags.TagId = dbo.Tags.Id WHERE dbo.Tags.Name like '{id}')"));
+            return QueryExecutor.List<AspNetUser>(query, $"Get Users List By Tag = {id}");
+        }
+
         public static List<AspNetUser> GetUsersByRoleId(string roleId)
         {
             if (string.IsNullOrWhiteSpace(roleId)) return new List<AspNetUser>();
@@ -74,21 +86,37 @@ namespace LayerDao
             return QueryExecutor.FirstOrDefault<AspNetUser>(query, "Get Asp User By Email");
         }
 
-
-        //public static bool HaveRole(string username, List<string> roles)
-        //{
-        //    if (string.IsNullOrWhiteSpace(username) || roles == null || roles.Count == 0) return false;
-        //    var listStr = roles.Count == 1
-        //        ? $"'{roles.Select(s => s?.ToLower()).FirstOrDefault()}'"
-        //        : $"{roles.Select(s => "'" + s?.ToLower() + "'").Aggregate((c, n) => c + "," + n)}";
-
-        //    var query =
-        //        "SELECT TOP 1 [PersonName],[Email],[UserName],[Role] " +
-        //        "FROM [dbo].[UserRolesView] " +
-        //        $"WHERE Email = '{username}' and LOWER(Role) IN ({listStr});";
-        //    return QueryExecutor.FirstOrDefault<UserRolesView>(query) != null;
-        //}
-
+        public static bool HaveRole(string username, List<string> roles)
+        {
+            if (string.IsNullOrWhiteSpace(username) || roles == null || roles.Count == 0) return false;
+            var query = "Select dbo.AspNetRoles.Name Result" +
+                "FROM dbo.AspNetUserRoles INNER JOIN dbo.AspNetRoles " +
+                "ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId " +
+                "INNER JOIN dbo.AspNetUsers ON dbo.AspNetUsers.Id = dbo.AspNetUserRoles.UserId " +
+                $"WHERE dbo.AspNetUsers.Email like '{username}'";
+            var userRolesResults = QueryExecutor.List<TemplateClass<string>>(query);
+            if (userRolesResults == null || userRolesResults.Count == 0) return false;
+            var userRoles = userRolesResults.Select(u => u.Result.Trim().ToLower()).ToList();
+            return roles.FirstOrDefault(ur => ur != null && userRoles.Contains(ur.Trim().ToLower())) != null;
+        }
+        public static bool Create(AspNetUser user)
+        {
+            var query = " INSERT INTO[dbo].[AspNetUsers] ([Id],[Email],[EmailConfirmed],[PasswordHash],[SecurityStamp],[PhoneNumber],[PhoneNumberConfirmed],[TwoFactorEnabled],[LockoutEndDateUtc],[LockoutEnabled],[AccessFailedCount],[UserName],[Name]) VALUES "
+                + "(" + user.Id
+                + "," + user.Email
+                + "," + (user.EmailConfirmed ? "1" : "0")
+                + "," + user.PasswordHash
+                + "," + user.SecurityStamp
+                + "," + user.PhoneNumber
+                + "," + (user.PhoneNumberConfirmed ? "1" : "0")
+                + "," + (user.TwoFactorEnabled ? "1" : "0")
+                + "," + user.LockoutEndDateUtc
+                + "," + (user.LockoutEnabled ? "1" : "0")
+                + "," + user.AccessFailedCount
+                + "," + user.UserName
+                + "," + user.Name + ");";
+            return QueryExecutor.ExecuteDml(query, "Create New User");
+        }
 
         public static List<AspNetRole> GetRolesDto(string username)
         {

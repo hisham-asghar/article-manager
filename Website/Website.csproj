@@ -186,6 +186,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\MyStores\MyUserStore.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -198,14 +199,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Controllers\Content\bootstrap-theme.css" />
-    <Content Include="Controllers\Content\bootstrap-theme.min.css" />
-    <Content Include="Controllers\Content\bootstrap.css" />
-    <Content Include="Controllers\Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Controllers\Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\bootstrap-theme.css.map" />
@@ -240,18 +236,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Models\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Models\Account\ConfirmEmail.cshtml" />
-    <Content Include="Models\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Models\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Models\Account\ForgotPassword.cshtml" />
-    <Content Include="Models\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Models\Account\Login.cshtml" />
-    <Content Include="Models\Account\Register.cshtml" />
-    <Content Include="Models\Account\ResetPassword.cshtml" />
-    <Content Include="Models\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Models\Account\SendCode.cshtml" />
-    <Content Include="Models\Account\VerifyCode.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
@@ -308,20 +292,27 @@
     <Content Include="Views\ArticleManagerViews\Details.cshtml" />
     <Content Include="Views\ArticleManagerViews\Edit.cshtml" />
     <Content Include="Views\ArticleManagerViews\Index.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Controllers\Content\bootstrap.min.css.map" />
-    <Content Include="Controllers\Content\bootstrap.css.map" />
-    <Content Include="Controllers\Content\bootstrap-theme.min.css.map" />
-    <Content Include="Controllers\Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />

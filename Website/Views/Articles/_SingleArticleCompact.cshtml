@@ -25,21 +25,24 @@
             <p>@article.SubTitle</p>
         </div>
         <div class="card-footer" style="padding: 8px;padding-bottom:12px;">
-            @if (article.CreatedBy == User.Identity.GetUserId())
+            @if (article.CreatedBy == User.Identity.GetUserId() && article.IsReadyToReview == false)
             {
                 <a class="btn btn-info btn-sm" href="@Url.Action("Create","ArticleBlocks", new { id = article.Id})">Add Block</a>
             }
-            @if (User.IsInRole(Website.Models.Constants.UserRoles.Reviewer) && article.CreatedBy != User.Identity.GetUserId() && (article.ArticleReviews == null || article.ArticleReviews.Count() == 0))
+            @if (User.IsInRole(Website.Models.Constants.UserRoles.Reviewer) && article.CreatedBy != User.Identity.GetUserId() 
+                && article.IsReadyToReview == true && article.IsReadyToPublish == false
+                && (article.ArticleReviews == null || article.ArticleReviews.Count() == 0))
             {
                 <a class="btn btn-info btn-sm" href="@Url.Action("Create","ArticleReviews", new { id = article.Id})">Post Review</a>
             }
-            @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin) && article.IsReadyToReview == false && article.IsReadyToPublish == false
+            @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin) && 
+                article.IsReadyToReview == false && article.IsReadyToPublish == false
                 && (article.ArticleReviews == null || article.ArticleReviews.Count() == 0))
             {
                 <a class="btn btn-info btn-sm" href="@Url.Action("MarkArticleForReview","Articles", new { id = article.Id})">Mark Article For Review</a>
             }
             @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin) && article.IsReadyToReview == true && article.IsReadyToPublish == false
-                && (article.ArticleReviews == null || article.ArticleReviews.Count() == 0))
+                && ((article.ArticleReviews == null || article.ArticleReviews.Count() == 0) == false))
             {
                 <a class="btn btn-info btn-sm" href="@Url.Action("MarkArticleForPublish","Articles", new { id = article.Id})">Publish Article</a>
             }

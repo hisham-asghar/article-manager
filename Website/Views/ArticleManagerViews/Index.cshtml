@@ -13,61 +13,76 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.SubTitle)
+            @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CreatedByName)
+            Created By
         </th>
         
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedByEmail)
-        </th>
         <th>@Html.Label("Status")</th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubTitle)
-        </td>
-       
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedByName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedByEmail)
-        </td>
-        @if (item.IsReadyToReview == false)
-        {  <td>
-           
-                <a class="btn btn-info btn-sm" href="@Url.Action("ReviewRequest","ArticleManagerViews", new { id = item.Id})">Apply For Review</a>
-           </td>
-        }
-        else if(item.IsReadyToReview == true && item.IsReadyToPublish == false && item.ReviewCount < 1)
-        {
-                <td>
-                    <a class="btn btn-info btn-sm" href="@Url.Action("ArticleReviewed","ArticleManagerViews", new { id = item.Id})">Add Review</a>
-                </td>
-        }
-        else if(item.ReviewCount >= 1 && item.IsReadyToPublish == false)
-        {
-            <td>
-                <a class="btn btn-info btn-sm" href="@Url.Action("PublishRequesh","ArticleManagerViews", new { id = item.Id})">Ready for Publish</a>
-            </td>
-        }
-        else if (item.IsReadyToPublish == true)
-        {
-            <td>
-                <a class="btn btn-info btn-sm" href="@Url.Action("ArticlePublished","ArticleManagerViews", new { id = item.Id})">Published</a>
-            </td>
-        }
+<tr>
+    <td>
+        <a href="/Articles/Details/@item.Id">
+            @Html.DisplayFor(modelItem => item.Title)
+        </a>
+    </td>
 
-        @*<td>
+    <td title="@item.CreatedByEmail">
+        @Html.DisplayFor(modelItem => item.CreatedByName)
+    </td>
+    <td>
+        @if (item.IsReadyToReview == false)
+        {
+            <span class="">New Article</span>
+        }
+        else if (item.IsReadyToReview && item.ReviewCount == 0)
+        {
+
+            <span class="">Pending For Review</span>
+        }
+        else if (item.IsReadyToReview && item.ReviewCount > 0 && item.IsReadyToPublish == false)
+        {
+
+            <span class="">Reviewed - Pending For Publish</span>
+        }
+        else if (item.IsReadyToReview && item.ReviewCount > 0 && item.IsReadyToPublish == true)
+        {
+
+            <span class="">Published</span>
+        }
+    </td>
+
+    <td>
+        @if (item.IsReadyToReview == false)
+        {
+            <a class="btn btn-info btn-sm"
+               href="@Url.Action("ReviewRequest","ArticleManagerViews", new { id = item.Id})">Push to Review Queue</a>
+        }
+        else if (item.IsReadyToReview && item.ReviewCount == 0)
+        {
+        }
+        else if (item.IsReadyToReview && item.ReviewCount > 0 && item.IsReadyToPublish == false)
+        {
+            <a class="btn btn-success btn-sm"
+               href="/Articles/MarkArticleForPublish/@item.Id">Publish the Article</a>
+        }
+        else if (item.IsReadyToReview && item.ReviewCount > 0 && item.IsReadyToPublish == true)
+        {
+        }
+        <a class="btn btn-danger btn-sm"
+           href="@Url.Action("Delete","Articles", new { id = item.Id})">Delete Article</a>
+    </td>
+    
+
+    @*<td>
         @Html.ActionLink("Edit", "Edit", new {  }) |
         @Html.ActionLink("Details", "Details", new {  }) |
         @Html.ActionLink("Delete", "Delete", new { })
         </td>*@
-    </tr>
+</tr>
 }
 
 </table>

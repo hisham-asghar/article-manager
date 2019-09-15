@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -16,6 +17,18 @@ namespace Website
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+        protected void Application_End()
+        {
+            using (var wc = new WebClient())
+            {
+                try
+                {
+                    wc.DownloadStringAsync(new Uri("https://admin.themarucagroup.com/"));
+                }
+                catch (Exception ex) { }
+            }
+
         }
     }
 }

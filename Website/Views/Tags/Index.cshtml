@@ -13,6 +13,7 @@
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
+            
         </th>
         <th></th>
     </tr>
@@ -21,11 +22,15 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
+            @if (item.Name == Website.Models.Constants.GetDefaultDatabase())
+            {
+                <span class="label label-success">default</span>
+            }
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            <a href="/Tags/UpdateDefaultDatabase?name=@item.Name">Set as Default</a> |
+            <a href="/ArticleManagerViews/Index/@item.Name">View Articles</a> |
+            <a href="/UsersAdmin/Index/@item.Name">View Users</a>
         </td>
     </tr>
 }

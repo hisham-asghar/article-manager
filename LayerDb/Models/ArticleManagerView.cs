@@ -64,5 +64,6 @@ namespace LayerDb.Models
         public long? ArticleId { get; set; }
 
         public long? TagId { get; set; }
+        public string TagName { get; set; }
     }
 }

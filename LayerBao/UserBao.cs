@@ -10,7 +10,7 @@ namespace LayerBao
 {
     public class UserBao
     {
-        public static bool IsUserTagExist(string email)
+        public static bool IsUserTagExist1(string email)
         {
             return UserDao.IsUserTagExist(email);
         }
@@ -32,6 +32,10 @@ namespace LayerBao
         public static List<AspNetUser> GetUsersByRoleName(string id)
         {
             return UserDao.GetUsersByRoleName(id);
+        }
+        public static List<AspNetUser> GetUsersByTagName(string id)
+        {
+            return UserDao.GetAspNetUsersByTagName(id);
         }
 
         public static bool UpdateRoles(string userId, string email, List<string> ur)
@@ -55,6 +59,11 @@ namespace LayerBao
             return result;
         }
 
+        public static bool Create(AspNetUser aspNetUser)
+        {
+            return UserDao.Create(aspNetUser);
+        }
+
         public static void Update(AspNetUser aspuser, string id)
         {
             UserDao.UpdateFull(aspuser,id);
@@ -68,6 +77,59 @@ namespace LayerBao
         public static AspNetUser GetUserById(string id)
         {
             return UserDao.GetAspUserById(id);
+        }
+        
+        public static bool AddRoleById(string id, string role)
+        {
+            return UserDao.AddRoleById(id, role);
+        }
+
+        public static bool RemoveRoleById(string id, string role)
+        {
+            return RemoveRoleById(id, role);
+        }
+
+        public static List<AspNetUserClaim> GetClaims(string userId)
+        {
+            return UserDao.GetClaims(userId);
+        }
+
+        public static bool AddExternalLogin(AspNetUserLogin userLogin)
+        {
+            return UserDao.AddExternalLogin(userLogin);
+        }
+
+        public static List<AspNetUserLogin> GetUserExternalLogins(string userId)
+        {
+            return UserDao.GetUserExternalLogins(userId);
+        }
+
+        public static AspNetUser GetAspUserByExternalLogin(AspNetUserLogin userLogin)
+        {
+            return UserDao.GetAspUserByExternalLogin(userLogin);
+        }
+        public static bool RemoveExternalLogin(AspNetUserLogin userLogin)
+        {
+            return UserDao.RemoveExternalLogin(userLogin);
+        }
+
+        public static bool AddUserClaim(AspNetUserClaim claim)
+        {
+            return UserDao.AddUserClaim(claim);
+        }
+        public static bool RemoveUserClaim(AspNetUserClaim claim)
+        {
+            return UserDao.RemoveUserClaim(claim);
+        }
+
+        public static bool HaveRole(string email, List<string> list)
+        {
+            return UserDao.HaveRole(email, list);
+        }
+
+        public static AspNetUser GetAspUser(string email, string id = null)
+        {
+            return UserDao.GetAspUser(email, id);
         }
     }
 }

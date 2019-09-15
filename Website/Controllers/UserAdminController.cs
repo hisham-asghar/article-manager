@@ -38,18 +38,9 @@ namespace RentalsProject.Controllers.Users
         // GET: /Users/
         public ActionResult Index(string id)
         {
-            var roles = UserBao.GetRoles(null);
-            if (!roles.Contains(id))
-            {
-                return View(UserManager.Users.ToList());
-            }
-
-            var users = UserBao.GetUsersByRoleName(id);
-            if (id.ToLower().Trim() == "homeowner")
-            {
-                ViewBag.HomeOwner = true;
-            }
-            return View("LatestIndex", users);
+            var users = UserBao.GetUsersByTagName(id);
+            var applicationUsers = users.Select(Website.Models.MyStores.MyUserStore.ToApplicationUser).ToList();
+            return View(applicationUsers);
         }
 
         ////

@@ -15,9 +15,10 @@ namespace Website.Controllers.Articles
         private DbModel db = new DbModel();
       
         // GET: ArticleManagerViews
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
-            return View(db.ArticleManagerViews.ToList());
+            var list = LayerBao.ArticlesBao.GetArticleManagerView(id ?? Models.Constants.GetDefaultDatabase());
+            return View(list);
         }
 
         // GET: ArticleManagerViews/Details/5

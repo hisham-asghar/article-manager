@@ -7,9 +7,15 @@
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
+
+        @if (User.IsInRole(Website.Models.Constants.UserRoles.Admin))
+        {
+            <li><a href="#"><b style="color:black;">(@Website.Models.Constants.GetDefaultDatabase())</b></a></li>
+        }
         <li>
             @Html.ActionLink("Hello " + (User.Identity.GetApplicationUser().Name ?? User.Identity.GetUserName()) + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
+
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
     }

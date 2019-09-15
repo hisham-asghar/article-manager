@@ -76,27 +76,45 @@ namespace Website.Controllers
 
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, change to shouldLockout: true
-                bool IsExist = UserBao.IsUserTagExist(model.Email);
-                if(IsExist==false)
-                {
-                    LogOff();
-                }
+                //bool IsExist = UserBao.IsUserTagExist(model.Email);
+                //if(IsExist==false)
+                //{
+                //    LogOff();
+                //}
                 model.Password = Functions.password;
             }
-                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-                switch (result)
+            var result = SignInManager.PasswordSignIn(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            if(result == SignInStatus.Failure)
+            {
+                var aspUser = UserBao.GetAspUser(model.Email);
+                //bool IsExist = UserBao.IsUserTagExist(model.Email);
+                if (aspUser != null)
                 {
-                    case SignInStatus.Success:
-                        return RedirectToLocal(returnUrl);
-                    case SignInStatus.LockedOut:
-                        return View("Lockout");
-                    case SignInStatus.RequiresVerification:
-                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                    case SignInStatus.Failure:
-                    default:
-                        ModelState.AddModelError("", "Invalid login attempt.");
-                        return View(model);
+                    try
+                    {
+                        string code = UserManager.GeneratePasswordResetToken(aspUser.Id);
+                        var resetPass = UserManager.ResetPassword(aspUser.Id, code, model.Password);
+                        result = SignInManager.PasswordSignIn(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+                    }catch(Exception ex)
+                    {
+
+                    }
                 }
+
+            }
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+            }
             
         }
 
@@ -162,12 +180,13 @@ namespace Website.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email,Name = model.Name };
                 model.Password = Functions.password;
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    long tagId = SiteMetaBao.GetCurrentDatabase();
-                    UserBao.InsertTagId(model.Email,tagId);
+                    var tag = SiteMetaBao.GetCurrentDatabase()?.Id;
+                    if(tag != null)
+                        UserBao.InsertTagId(model.Email, tag ?? 0);
+                    SignInManager.SignIn(user, isPersistent:false, rememberBrowser:false);
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

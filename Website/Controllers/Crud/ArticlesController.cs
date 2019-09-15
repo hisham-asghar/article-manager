@@ -16,14 +16,15 @@ namespace Website.Controllers.Articles
     [Authorize]
     public class ArticlesController : Controller
     {
+
         private DbModel db = new DbModel();
-        long id = SiteMetaBao.GetCurrentDatabase();
+        //long id = SiteMetaBao.GetCurrentDatabase();
         // GET: Articles
         public ActionResult Index()
         {
-            var articles = ArticlesBao.GetArticleManagerView();
+            var articles = ArticlesBao.GetArticleManagerView(Models.Constants.GetDefaultDatabase());
             var myUserId = User.Identity.GetUserId();
-            var myRoles = LayerBao.UserBao.GetRoles(myUserId);
+            var myRoles = UserBao.GetRoles(myUserId);
             var onlyMyArticles = myRoles.Count() == 0;
             
             if (onlyMyArticles)
@@ -36,54 +37,51 @@ namespace Website.Controllers.Articles
             {
                 articles = articles.Where(a => a.CreatedBy == myUserId || a.IsReadyToPublish).ToList();
             }
-            
-
-            
-            
-            return View(articles.ToList());
+            return View(articles);
         }
         
         // GET: Articles
         public ActionResult MyArticles()
         {
             var myUserId = User.Identity.GetUserId();
-
-            var articles = ArticlesBao.GetArticleManagerViewByUserId(myUserId, id);
-
-
-            //var articles = QueryExecutor.List<Article>("Select a.* , an.*,at.* from dbo.Articles as a inner join dbo.ArticleTags as at on a.Id = at.ArticleId  inner join dbo.AspNetUsers as an on an.Id = a.CreatedBy where at.TagId = 1", "Get Tags For Articles");
-            return View("Index", articles.ToList());
+            var articles = ArticlesBao.GetArticleManagerView(Models.Constants.GetDefaultDatabase());
+            articles = articles.Where(a => a.CreatedBy == myUserId).ToList();
+            return View("Index", articles);
         }
         [Authorize(Roles = Models.Constants.UserRoles.Admin + "," + Models.Constants.UserRoles.Reviewer)]
         // GET: Articles
         public ActionResult ReviewerArticles()
         {
             var myUserId = User.Identity.GetUserId();
-            var articles = db.Articles.Where(a => a.IsReadyToReview).Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
-            return View("Index", articles.ToList());
+            var articles = ArticlesBao.GetArticleManagerView(Models.Constants.GetDefaultDatabase())
+                .Where(a => a.IsReadyToReview).ToList();//.Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
+            articles = articles.Where(a => a.CreatedBy != myUserId).ToList();
+            return View("Index", articles);
         }
         [Authorize(Roles = Models.Constants.UserRoles.Admin)]
         // GET: Articles
         public ActionResult NewArticles()
         {
             var myUserId = User.Identity.GetUserId();
-            var articles = db.Articles.Where(a => a.IsReadyToReview == false).Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
-            return View("Index", articles.ToList());
+            var articles = ArticlesBao.GetArticleManagerView().Where(a => a.IsReadyToReview == false).ToList();//.Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
+            return View("Index", articles);
         }
         [Authorize(Roles = Models.Constants.UserRoles.Admin)]
         // GET: Articles
         public ActionResult ArticlesWithReviews()
         {
             var myUserId = User.Identity.GetUserId();
-            var articles = db.Articles.Where(a => a.IsReadyToReview && a.ArticleReviews.Count > 0 && !a.IsReadyToPublish).Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
-            return View("Index", articles.ToList());
+            var articles = ArticlesBao.GetArticleManagerView()
+                .Where(a => a.IsReadyToReview && a.ReviewCount > 0 && !a.IsReadyToPublish).ToList();//.Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
+            return View("Index", articles);
         }
         [Authorize(Roles = Models.Constants.UserRoles.Admin + "," + Models.Constants.UserRoles.Reviewer + "," + Models.Constants.UserRoles.Reader)]
         // GET: Articles
         public ActionResult PublishedArticles()
         {
             var myUserId = User.Identity.GetUserId();
-            var articles = db.Articles.Where(a => a.IsReadyToReview && a.ArticleReviews.Count > 0 && a.IsReadyToPublish).Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
+            var articles = ArticlesBao.GetArticleManagerView()
+                .Where(a => a.IsReadyToReview && a.ReviewCount > 0 && a.IsReadyToPublish).ToList();//.Include(a => a.AspNetUser).Include(a => a.AspNetUser1);
             return View("Index", articles.ToList());
         }
 
@@ -139,6 +137,9 @@ namespace Website.Controllers.Articles
                 article.OnCreated = DateTime.Now;
                 article.OnModified = DateTime.Now;
                 article.Guid = Guid.NewGuid().ToString();
+                var tag = LayerBao.SiteMetaBao.GetCurrentDatabase();
+                if (tag != null)
+                    article.ArticleTags.Add(new ArticleTag() { TagId = tag.Id });
                 db.Articles.Add(article);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -220,8 +221,9 @@ namespace Website.Controllers.Articles
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Article article = db.Articles.Find(id);
-            db.Articles.Remove(article);
+            var article = db.Articles.Find(id);
+            article.IsDeleted = true;
+            //db.Articles.Remove(article);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

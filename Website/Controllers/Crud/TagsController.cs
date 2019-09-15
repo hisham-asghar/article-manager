@@ -114,6 +114,12 @@ namespace Website.Controllers.Crud
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+        public ActionResult UpdateDefaultDatabase(string name)
+        {
+            LayerBao.SiteMetaBao.SetCurrentDatabaseName(name);
+            Models.Constants.ResetDefaultDatabase();
+            return RedirectToAction("Index");
+        }
 
         protected override void Dispose(bool disposing)
         {

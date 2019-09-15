@@ -18,16 +18,15 @@ namespace LayerDao
 
         public static List<LayerDb.Models.ArticleManagerView> GetArticleManagerView()
         {
-
-            return QueryExecutor.List<ArticleManagerView>("SELECT * FROM  ArticleManagerView", "Article Manager View");
-
+            var query = "SELECT * FROM  dbo.ArticleManagerView WHERE IsDeleted = 0";
+            return QueryExecutor.List<ArticleManagerView>(query, "Article Manager View");
         }
 
         public static List<LayerDb.Models.ArticleManagerView> GetArticleManagerViewByUserId( string userId, long tagId)
         {
-
-            return QueryExecutor.List<ArticleManagerView>($"SELECT * FROM  ArticleManagerView WHERE ArticleManagerView.CreatedBy = '{userId}' and ArticleManagerView.TagId = {tagId}", "Article Manager View By Tag");
-
+            var query = $"SELECT * FROM  dbo.ArticleManagerView " +
+                $"WHERE ArticleManagerView.CreatedBy = '{userId}' and dbo.ArticleManagerView.TagId = {tagId}";
+            return QueryExecutor.List<ArticleManagerView>(query, "Article Manager View By Tag");
         }
         
 
